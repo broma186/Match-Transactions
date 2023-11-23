@@ -1,22 +1,20 @@
 package com.example.matchtransactions
 
-import android.content.Context
-import android.util.AttributeSet
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.platform.ComposeView
+import android.os.Bundle
+import android.os.PersistableBundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import com.example.matchtransactions.compose.screen.MatchTransactionsScreen
 
-class MatchTransactionsActivity : AppCompatActivity() {
+class MatchTransactionsActivity : ComponentActivity() {
 
-    override fun onCreateView(
-        parent: View?,
-        name: String,
-        context: Context,
-        attrs: AttributeSet
-    ): View {
-        return ComposeView(context).apply {
-            setContent {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
                 MatchTransactionsScreen { finish() }
             }
         }

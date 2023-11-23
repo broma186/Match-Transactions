@@ -2,12 +2,13 @@ package com.example.matchtransactions.compose.viewmodel
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.matchtransactions.models.Transaction
 import com.example.matchtransactions.models.Transactions
 
-class FindMatchViewModel : ViewModel() {
+class MatchTransactionsViewModel : ViewModel() {
 
     companion object {
         val TRANSACTIONS = arrayListOf(
@@ -25,7 +26,7 @@ class FindMatchViewModel : ViewModel() {
         const val TARGET_MATCH_VALUE = 10000f
     }
 
-    private val _remainingTotal: MutableState<Float> = mutableStateOf(TARGET_MATCH_VALUE)
+    private val _remainingTotal: MutableState<Float> = mutableFloatStateOf(TARGET_MATCH_VALUE)
     val remainingTotal: State<Float> = _remainingTotal
 
     private val _transactions: MutableState<Transactions> = mutableStateOf(Transactions(TRANSACTIONS))
