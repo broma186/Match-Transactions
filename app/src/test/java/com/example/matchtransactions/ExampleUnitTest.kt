@@ -1,4 +1,4 @@
-package com.example.xeroexercise
+package com.example.matchtransactions
 
 import org.junit.Test
 

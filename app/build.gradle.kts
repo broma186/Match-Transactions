@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.xeroexercise"
+    namespace = "com.example.matchtransactions"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.xeroexercise"
+        applicationId = "com.example.matchtransactions"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -51,6 +51,11 @@ android {
 
 dependencies {
 
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test:runner:1.5.2")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.1")

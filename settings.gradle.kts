@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "xeroexercise"
+rootProject.name = "matchtransactions"
 include(":app")
  
