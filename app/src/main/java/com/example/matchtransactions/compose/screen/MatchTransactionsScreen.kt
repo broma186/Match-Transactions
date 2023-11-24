@@ -119,7 +119,6 @@ fun MatchTransactionsScreenContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -130,13 +129,13 @@ fun MatchTransactionsScreenContent(
                     maxLines = 1
                 )
             }
-            MatchTransactionsContent(transactions, onTransactionSelected)
+            TransactionsContent(transactions, onTransactionSelected)
         }
     }
 }
 
 @Composable
-fun MatchTransactionsContent(
+fun TransactionsContent(
     transactions: List<Transaction>,
     onTransactionSelected: (index: Int) -> Unit
 ) {
