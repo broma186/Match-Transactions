@@ -4,10 +4,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme
@@ -20,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.matchtransactions.R
@@ -35,38 +32,28 @@ private object NoRippleTheme : RippleTheme {
 
 @Composable
 fun TransactionItem(
-    index: Int,
+    modifier: Modifier = Modifier,
     paidTo: String,
     transactionDate: String,
     total: Float,
     docType: String,
-    isSelected: Boolean,
-    onSelected: (index: Int) -> Unit,
-) {
+    isSelected: Boolean) {
     CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
-        Column(
-            Modifier
-                .selectable(
-                    isSelected,
-                    role = Role.Checkbox
-                ) {
-                    onSelected.invoke(index)
-                }
-        ) {
             Row(
-                Modifier
-                    .fillMaxWidth()
-                    .height(72.dp)
-                    .padding(horizontal = 16.dp),
+                modifier = modifier,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Checkbox(
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier
+                        .size(48.dp)
+                        .padding(start = 16.dp),
                     checked = isSelected,
                     onCheckedChange = null
                 )
                 Box(
-                    Modifier.fillMaxWidth()
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(end = 16.dp)
                 ) {
                     Column(
                         Modifier
@@ -102,6 +89,5 @@ fun TransactionItem(
                     }
                 }
             }
-        }
     }
 }

@@ -54,8 +54,6 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test:runner:1.5.2")
 
     implementation("androidx.activity:activity-compose:1.8.1")
     implementation("androidx.compose.ui:ui:1.5.4")
@@ -66,8 +64,13 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.navigation:navigation-compose:2.5.3")
 
+    api("io.mockk:mockk:1.13.5")
+    api("androidx.test:core:1.5.0")
+    api("androidx.test:runner:1.5.2")
+    api("androidx.test:rules:1.5.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test:runner:1.5.2")
 
 }

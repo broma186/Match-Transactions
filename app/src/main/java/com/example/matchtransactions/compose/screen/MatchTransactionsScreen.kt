@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,9 +27,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.matchtransactions.R
 import com.example.matchtransactions.compose.components.TransactionItem
 import com.example.matchtransactions.compose.viewmodel.MatchTransactionsViewModel
@@ -34,24 +39,38 @@ import com.example.matchtransactions.models.Transaction
 
 @Composable
 fun MatchTransactionsScreen(
-    matchTransactionsViewModel: MatchTransactionsViewModel = MatchTransactionsViewModel(),
     exit: () -> Unit
 ) {
     MatchTransactionsScreen(
+        viewModel(
+            factory = MatchTransactionsViewModel.Factory(
+                MatchTransactionsViewModel.transactions
+            )
+        ), exit
+    )
+}
+
+@Composable
+fun MatchTransactionsScreen(
+    matchTransactionsViewModel: MatchTransactionsViewModel,
+    exit: () -> Unit
+) {
+    MatchTransactionsScreenContent(
         matchTransactionsViewModel.remainingTotal.value,
         matchTransactionsViewModel.transactions.value.transactionList,
         matchTransactionsViewModel::checkForSingleTransaction,
         matchTransactionsViewModel::onTransactionSelected,
-        exit)
+        exit
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MatchTransactionsScreen(
+fun MatchTransactionsScreenContent(
     remainingTotal: Float,
     transactions: List<Transaction>,
     checkForSingleTransaction: () -> Unit,
-    onTransactionSelected: (index: Int, total: Float) -> Unit,
+    onTransactionSelected: (index: Int) -> Unit,
     exit: () -> Unit
 ) {
     LaunchedEffect("CheckForSingleTransaction") {
@@ -64,8 +83,10 @@ fun MatchTransactionsScreen(
                     containerColor = colorResource(id = R.color.colorPrimary)
                 ),
                 title = {
-                    Text(stringResource(R.string.title_find_match),
-                    color = Color.White)
+                    Text(
+                        stringResource(R.string.title_find_match),
+                        color = Color.White
+                    )
                 },
                 navigationIcon = {
                     IconButton(
@@ -87,6 +108,7 @@ fun MatchTransactionsScreen(
         Column(
             Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(paddingValues)
         ) {
             Column(
@@ -97,33 +119,43 @@ fun MatchTransactionsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = stringResource(R.string.select_matches, remainingTotal),
+                    text = stringResource(R.string.select_matches, if (remainingTotal >= 0) remainingTotal else 0f),
                     textAlign = TextAlign.Center,
                     color = colorResource(id = R.color.text_title_subtext),
                     fontSize = dimensionResource(id = R.dimen.text_size_subtext).value.sp,
                     maxLines = 1
                 )
             }
-            Column(
-                Modifier
-                    .fillMaxWidth()
-            ) {
-                transactions.forEachIndexed { index, transaction ->
-                    TransactionItem(
-                        index,
-                        transaction.paidTo,
-                        transaction.transactionDate,
-                        transaction.total,
-                        transaction.docType,
-                        transaction.isSelected
-                    ) {
-                        onTransactionSelected(it, transaction.total)
-                    }
-                }
-            }
+            MatchTransactionsContent(transactions, onTransactionSelected)
         }
+    }
+}
+
+@Composable
+fun MatchTransactionsContent(
+    transactions: List<Transaction>,
+    onTransactionSelected: (index: Int) -> Unit
+) {
+    transactions.forEachIndexed { index, transaction ->
+        TransactionItem(
+            Modifier
+                .fillMaxWidth()
+                .height(72.dp)
+                .toggleable(
+                    value = transaction.isSelected,
+                    role = Role.Checkbox
+                ) {
+                    onTransactionSelected.invoke(index)
+                },
+            transaction.paidTo,
+            transaction.transactionDate,
+            transaction.total,
+            transaction.docType,
+            transaction.isSelected
+        )
     }
 }
